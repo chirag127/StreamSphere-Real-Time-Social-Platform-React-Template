@@ -1,91 +1,52 @@
 name: CI
 
-# This workflow will do a clean install of dependencies, cache/restore them,
-# build the source code and run tests across different test runners/platforms.
-# For more information see: https://docs.github.com/en/actions/automating-build-and-test-with-github-actions
-
+# Trigger the workflow on push events to the main branch and on pull request events
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
+# Define a set of reusable jobs
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
 
     strategy:
       matrix:
-        node-version: [20.x] # Consider adding 22.x if targeting newer Node.js features.
-        # If your project needs Python, add python-version here and adjust steps accordingly.
-        # python-version: [3.10, 3.11, 3.12]
+        node-version: [20.x] # Specify the Node.js version for consistency
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Fetch all history for accurate commit tracking
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm' # Use npm for caching dependencies
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm' # Cache npm dependencies for faster builds
 
-      # Uncomment and adapt if Python is a primary dependency
-      # - name: Set up Python ${{ matrix.python-version }}
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: ${{ matrix.python-version }}
-      #     cache: 'pip' # Use pip for caching dependencies
+    - name: Install Dependencies
+      run: npm ci # Use 'ci' for cleaner, deterministic installs in CI environments
 
-      - name: Install Dependencies
-        run: npm ci --prefer-offline --no-audit
-        # If using Python, would be something like: pip install --upgrade pip && pip install -r requirements.txt
+    - name: Lint and Format (Biome)
+      run: npx @biomejs/biome check --apply . # Automatically apply formatting and fix linting issues
 
-      # - name: Install Python Dependencies (if applicable)
-      #   run: | 
-      #     python -m pip install --upgrade pip
-      #     pip install -r requirements-dev.txt # Or your dev requirements file
+    - name: Run Vitest (Unit & Integration Tests)
+      run: npm test # Execute test script defined in package.json
 
-      - name: Lint and Format Check (Biome/Ruff - Adapt as needed)
-        # This step assumes you'll integrate a linter like Biome (for JS/TS) or Ruff (for Python).
-        # For JS/TS with Biome:
-        run: npx @biomejs/biome check --apply-unsafe src/
-        # For Python with Ruff:
-        # run: ruff check . && ruff format .
+    # Example for E2E tests with Playwright (if applicable, uncomment and configure)
+    # - name: Install Playwright Browsers
+    #   run: npx playwright install
+    # - name: Run Playwright E2E Tests
+    #   run: npm run e2e # Assuming an 'e2e' script in package.json
 
-      - name: Build Project
-        # This command depends heavily on your project's build system (e.g., Vite, Webpack, Rollup, or Python packaging).
-        # Example for a Vite project:
-        run: npm run build --if-present
-        # Example for a Python project (if building distributables):
-        # run: python -m build
+    # Example for code coverage upload (if using a service like Codecov or Coveralls)
+    # - name: Upload Coverage Reports
+    #   uses: codecov/codecov-action@v4 # Replace with your chosen coverage service
+    #   with:
+    #     token: ${{ secrets.CODECOV_TOKEN }} # Ensure you have this secret configured
 
-      - name: Run Unit Tests (Vitest/Pytest - Adapt as needed)
-        # For JS/TS with Vitest:
-        run: npm test --if-present
-        # For Python with Pytest:
-        # run: pytest
-
-      # Add E2E tests step if applicable, e.g., using Playwright
-      # - name: Run End-to-End Tests (Playwright)
-      #   run: npx playwright install --with-deps
-      #   run: npm run test:e2e
-
-      - name: Upload Artifacts (Optional)
-        # Upload build artifacts for potential manual download or further processing.
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output
-          path: dist/ # Adjust path based on your build output directory
-
-      # - name: Upload Coverage (Optional, requires Codecov/Coveralls setup)
-      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      #   uses: codecov/codecov-action@v4
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }} # Ensure you have this secret configured
-      #     files: ./coverage/coverage.xml # Adjust path to your coverage report
+    # NOTE: For a React template focused on Frontend, unit and linting are primary.
+    # E2E tests and coverage are often added as the project matures.
+    # This CI ensures basic code quality and functionality.
