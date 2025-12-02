@@ -1,0 +1,62 @@
+---
+# Badges configuration for TweetStorm-Real-Time-Social-Media-Web-App
+
+# Build Status Badge
+build_status:
+  url: https://github.com/chirag127/TweetStorm-Real-Time-Social-Media-Web-App/actions/workflows/ci.yml
+  alt_text: Build Status
+  markdown: "[![Build Status](https://github.com/chirag127/TweetStorm-Real-Time-Social-Media-Web-App/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/chirag127/TweetStorm-Real-Time-Social-Media-Web-App/actions/workflows/ci.yml)"
+  style: flat-square
+  user: chirag127
+  repo: TweetStorm-Real-Time-Social-Media-Web-App
+
+# Code Coverage Badge
+code_coverage:
+  url: https://codecov.io/gh/chirag127/TweetStorm-Real-Time-Social-Media-Web-App
+  alt_text: Code Coverage
+  markdown: "[![codecov](https://codecov.io/gh/chirag127/TweetStorm-Real-Time-Social-Media-Web-App/branch/main/graph/badge.svg?style=flat-square)](https://codecov.io/gh/chirag127/TweetStorm-Real-Time-Social-Media-Web-App)"
+  style: flat-square
+  user: chirag127
+  repo: TweetStorm-Real-Time-Social-Media-Web-App
+
+# Tech Stack Badges (Example - adapt to project)
+tech_stack:
+  - language:
+      url: https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black
+      alt_text: JavaScript
+      markdown: "[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)]"
+  - framework:
+      url: https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black
+      alt_text: React
+      markdown: "[![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)]"
+  - bundler:
+      url: https://img.shields.io/badge/Vite-B73BFE?style=flat-square&logo=vite&logoColor=white
+      alt_text: Vite
+      markdown: "[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=flat-square&logo=vite&logoColor=white)]"
+
+# Lint/Format Badge (Biome/Ruff)
+lint_format:
+  url: https://img.shields.io/badge/lint-biome-green?style=flat-square
+  alt_text: Lint / Format
+  markdown: "[![Lint / Format](https://img.shields.io/badge/lint-biome-green?style=flat-square)]"
+  style: flat-square
+  user: chirag127
+  repo: TweetStorm-Real-Time-Social-Media-Web-App
+
+# License Badge
+license:
+  url: https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg?style=flat-square
+  alt_text: License
+  markdown: "[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg?style=flat-square)]"
+  style: flat-square
+  user: chirag127
+  repo: TweetStorm-Real-Time-Social-Media-Web-App
+
+# GitHub Stars Badge
+github_stars:
+  url: https://github.com/chirag127/TweetStorm-Real-Time-Social-Media-Web-App
+  alt_text: GitHub Stars
+  markdown: "[![GitHub stars](https://img.shields.io/github/stars/chirag127/TweetStorm-Real-Time-Social-Media-Web-App?style=flat-square)]"
+  style: flat-square
+  user: chirag127
+  repo: TweetStorm-Real-Time-Social-Media-Web-App
