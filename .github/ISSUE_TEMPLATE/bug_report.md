@@ -1,96 +1,74 @@
 ---
 name: Bug Report
-about: Report an issue with StreamSphere
-title: "BUG: "
-labels: "bug"
-assignees:
+about: Create a report to help us improve
+title: "[Bug] "
+labels: bug
+assignees: "chirag127"
 
 body:
   - type: markdown
     attributes:
-      value: | # IMPORTANT: All links must use the new repository name!
-        Please provide a clear and concise description of the bug.
-        
-        **Repository Link:** https://github.com/chirag127/StreamSphere-Real-Time-Social-Platform-React-Template
-        
-        Thank you for helping improve StreamSphere!
+      value: |+
+        ## Bug Report
+        Thank you for reporting a bug! Please provide as much detail as possible to help us quickly diagnose and fix the issue.
 
-  - type: input
-    id: browser
-    name: Browser & Version
-    attributes:
-      label: Which browser are you using?
-      description: Please specify the browser and its version (e.g., Chrome 126, Firefox 120).
-      placeholder: "e.g. Chrome 126"
-    validations:
-      required: true
+        **Project Name:** StreamSphere-Real-Time-Social-Platform-React-Web-App
+        **Repository:** [https://github.com/chirag127/StreamSphere-Real-Time-Social-Platform-React-Web-App](https://github.com/chirag127/StreamSphere-Real-Time-Social-Platform-React-Web-App)
 
-  - type: input
-    id: os
-    name: Operating System
-    attributes:
-      label: What OS are you using?
-      description: Please specify the operating system (e.g., Windows 11, macOS Sonoma, Ubuntu 22.04).
-      placeholder: "e.g. Windows 11"
-    validations:
-      required: true
-
+        --- 
   - type: textarea
-    id: steps
-    name: Steps to Reproduce
-    attributes:
-      label: Steps to reproduce the behavior:
-      description: Provide a clear sequence of steps that will reproduce the bug.
-      placeholder: |
-        1. Go to '/some-page'
-        2. Click on the 'Button'
-        3. Observe the error...
-    validations:
-      required: true
-
-  - type: textarea
-    id: expected_behavior
-    name: Expected Behavior
+    id: what-happened
     attributes:
       label: What did you expect to happen?
-      description: Describe what you expected to occur.
-      placeholder: "The UI should update to show the new data."
+      description: |+
+        Clearly describe what you expected the application to do.
+      placeholder: |+
+        For example: "I expected the real-time feed to update instantly when a new message is posted."
     validations:
       required: true
-
   - type: textarea
-    id: actual_behavior
-    name: Actual Behavior
+    id: current-behavior
     attributes:
       label: What actually happened?
-      description: Describe what actually occurred, and include any error messages.
-      placeholder: "The UI remained unchanged, and a JavaScript error appeared in the console."
+      description: |+
+        Describe the actual behavior you observed. Be as specific as possible.
+      placeholder: |+
+        For example: "The feed did not update until the page was manually refreshed, or it updated with a significant delay."
     validations:
       required: true
-
   - type: textarea
-    id: additional_context
-    name: Additional Context
+    id: steps-to-reproduce
     attributes:
-      label: Add any other context about the problem here.
-      description: |
-        Screenshots, logs, relevant configuration files, or links to related issues.
-        Remember to use the correct repository link: https://github.com/chirag127/StreamSphere-Real-Time-Social-Platform-React-Template
-      placeholder: "e.g. Attached screenshot shows the error in the browser console."
+      label: Steps to reproduce
+      description: |+
+        Provide a step-by-step guide to reproduce the problem. This is crucial for us to fix it.
+      placeholder: |+
+        1. Go to the main feed page.
+        2. Post a new message.
+        3. Observe the feed...
     validations:
-      required: false
-
-  - type: markdown
+      required: true
+  - type: textarea
+    id: environment
     attributes:
-      value: | # IMPORTANT: All links must use the new repository name!
-        ### Technical Stack
-        
-        - **Repository:** https://github.com/chirag127/StreamSphere-Real-Time-Social-Platform-React-Template
-        - **Language:** JavaScript
-        - **Frontend Framework:** React 19+
-        - **Build Tool:** Vite 7+
-        - **Styling:** TailwindCSS v4+
-        - **Runtime:** Node.js 20+
-        - **Testing Framework:** Vitest, Playwright
-        
-        For more details on the Apex Toolchain and architectural principles, please refer to the [AGENTS.md](https://github.com/chirag127/StreamSphere-Real-Time-Social-Platform-React-Template/blob/main/AGENTS.md) file.
+      label: Environment (System, Browser, Versions)
+      description: |+
+        Please provide information about your environment:
+        *   Operating System: (e.g., Windows 11, macOS Sonoma 14.2, Ubuntu 22.04)
+        *   Browser and Version: (e.g., Chrome 120.0.6099.129, Firefox 115.0.2)
+        *   Project Dependencies: (If known, e.g., specific versions of React, Node.js)
+      placeholder: |+
+        *   OS: Windows 11
+        *   Browser: Chrome 120
+        *   Node.js version: 20.10.0
+        *   npm/yarn version: npm 10.2.3
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: |+
+        Any other context about the problem. Screenshots, logs, or links to relevant discussions are helpful.
+      placeholder: |+
+        Add any screenshots, console logs, or relevant information here.
