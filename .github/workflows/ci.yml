@@ -1,52 +1,85 @@
-name: CI
+# CI Pipeline for StreamSphere
 
-# Trigger the workflow on push events to the main branch and on pull request events
+# Description: This workflow automates the testing and building of the StreamSphere application.
+# It ensures code quality, checks for potential issues, and prepares the application for deployment.
+# Author: Apex Technical Authority
+# Date: December 2025
+
+name: CI Pipeline
+
+# Trigger the workflow on push events to the main branch and on pull requests targeting the main branch.
+# Also allows manual triggering for specific testing scenarios.
+
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
+  workflow_dispatch: # Allows manual triggering
 
-# Define a set of reusable jobs
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+  # Job to set up the development environment and run linters and tests.
+  build_and_test:
+    name: Build and Test (Node.js)
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner for CI tasks.
 
-    strategy:
-      matrix:
-        node-version: [20.x] # Specify the Node.js version for consistency
-
+    # Define the steps to be executed within this job.
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      # Step 1: Checkout the repository code.
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for reliable versioning and diffs.
 
-    - name: Setup Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm' # Cache npm dependencies for faster builds
+      # Step 2: Set up Node.js environment.
+      # Caches Node.js dependencies to speed up subsequent runs.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use Node.js version 20.x, a stable LTS release.
+          cache: 'npm' # Enable caching for npm packages.
 
-    - name: Install Dependencies
-      run: npm ci # Use 'ci' for cleaner, deterministic installs in CI environments
+      # Step 3: Install project dependencies.
+      # Uses npm ci for faster, more reliable installs in CI environments.
+      - name: Install Dependencies
+        run: npm ci
 
-    - name: Lint and Format (Biome)
-      run: npx @biomejs/biome check --apply . # Automatically apply formatting and fix linting issues
+      # Step 4: Run Linters and Formatters (using Biome as per Apex standards).
+      # This step enforces code style and catches potential syntax errors early.
+      - name: Run Linters and Formatters (Biome)
+        run: npx @biomejs/biome format --check . && npx @biomejs/biome lint --apply . # Check formatting and linting, applying fixes if possible.
 
-    - name: Run Vitest (Unit & Integration Tests)
-      run: npm test # Execute test script defined in package.json
+      # Step 5: Run Unit Tests (using Vitest).
+      # Ensures individual components and functions work as expected.
+      - name: Run Unit Tests (Vitest)
+        run: npm test -- --coverage # Execute Vitest tests and generate code coverage report.
 
-    # Example for E2E tests with Playwright (if applicable, uncomment and configure)
-    # - name: Install Playwright Browsers
-    #   run: npx playwright install
-    # - name: Run Playwright E2E Tests
-    #   run: npm run e2e # Assuming an 'e2e' script in package.json
+      # Step 6: Upload Code Coverage Reports.
+      # Makes code coverage data accessible via Codecov.
+      - name: Upload Coverage Reports to Codecov
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} # Use GitHub secrets for sensitive tokens.
+        if: success() && github.ref == 'refs/heads/main' # Upload only on success for the main branch.
 
-    # Example for code coverage upload (if using a service like Codecov or Coveralls)
-    # - name: Upload Coverage Reports
-    #   uses: codecov/codecov-action@v4 # Replace with your chosen coverage service
-    #   with:
-    #     token: ${{ secrets.CODECOV_TOKEN }} # Ensure you have this secret configured
+      # Step 7: Build the Project.
+      # Compiles the frontend application using Vite.
+      - name: Build Frontend Application
+        run: npm run build
+        env:
+          NODE_ENV: production # Set Node.js environment to production for optimized builds.
 
-    # NOTE: For a React template focused on Frontend, unit and linting are primary.
-    # E2E tests and coverage are often added as the project matures.
-    # This CI ensures basic code quality and functionality.
+      # Step 8: (Optional) Deploy to a Staging Environment (Example).
+      # This is a placeholder and would typically involve deployment scripts or services.
+      # - name: Deploy to Staging
+      #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      #   run: echo "Deploying to staging..."
+      #   # Add your deployment commands here, e.g., using a deployment script or service.
+
+      # Step 9: (Optional) E2E Tests with Playwright.
+      # Uncomment and configure if End-to-End tests are required.
+      # - name: Run End-to-End Tests (Playwright)
+      #   run: npm run test:e2e
+      #   env:
+      #     CI: true
+      #     PLAYWRIGHT_BROWSERS_PATH: 0 # Ensure browsers are downloaded for the test environment.
